@@ -1,10 +1,15 @@
 import TemplateDefault from '../../src/templates/Default';
 
 
-import { Container, Typography, Box, TextField, Select, Button } from '@material-ui/core';
+import { Container, Typography, Box, TextField, Select, Button, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { DeleteForever } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
+    mainImage: {
+    },
+    mask: {
+ },
     container: {
         padding: theme.spacing(4, 0, 4)
     },
@@ -15,14 +20,59 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.white,
         padding: theme.spacing(3),
         boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-    }
-}))
+    },
+    thumbsContainer: {
+        display: 'flex',
+        marginTop: 15,
+    },
+    dropZone: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        padding: 10,
+        margin: '0 15px 15px 0',
+        width: 200,
+        height: 150,
+        backgroundColor: theme.palette.background.default,
+        border: '2px dashed black',
+    },
+    thumb: {
+        position: 'relative',
+        width: 200,
+        height: 150,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+
+        '& $mainImage': {
+            backgroundColor: 'blue',
+            padding: '6px 10px',
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+        },
+        '&:hover $mask': {
+            display: 'flex',
+        },
+
+        '& $mask': {
+            display: 'none',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            height: '100%',
+            width: '100%',
+        },
+    },
+})) 
 
 const Publish = () => {
     const classes = useStyles();
 
     return (
         <TemplateDefault>
+                {/*Título da página*/}
             <Container maxWidth="sm" className={classes.container}>
                 <Typography component="h1" variant="h2" align='center' color='textPrimarys'>
                     Publicar Anúncio
@@ -31,7 +81,7 @@ const Publish = () => {
                     Quanto mais detalhado, melhor!
                 </Typography>
             </Container>
-
+                {/*Títlo e Categoria do Anúncio*/}
             <Container maxWidth="md" className={classes.boxContainer}>
                 <Box className={classes.box}>
                     <Typography component="h6" variant="h6" color='textPrimary'>
@@ -69,7 +119,7 @@ const Publish = () => {
                 </Box>
                 
             </Container>
-
+                {/*Imagens do anúncio*/}
             <Container maxWidth="md" className={classes.boxContainer}>
                 <Box className={classes.box}>
                     <Typography component="h6" variant="h6" color='textPrimary'>
@@ -78,9 +128,31 @@ const Publish = () => {
                     <Typography component="div" variant="body2" color='textPrimary'>
                         A imagem principal será a imagem que aparecerá no seu anúncio.
                     </Typography>
+                    <Box className={classes.thumbsContainer}>
+                        <Box className={classes.dropZone}>
+                            <Typography variant='body2' color='textPrimary'>
+                               Clique para adicionar uma imagem ou arraste aqui.
+                            </Typography>
+                        </Box>
+                        <Box 
+                        className={classes.thumb} 
+                        style={{ backgroundImage: 'url(https://source.unsplash.com/random)' }}
+                        >
+                            <Box className={classes.mainImage}>
+                                <Typography variant='body' color='secondary'>
+                                    Principal
+                                </Typography>
+                            </Box>
+                            <Box className={classes.mask}>
+                                <IconButton color='secondary'>
+                                    <DeleteForever fontSize='large'/> 
+                                </IconButton>
+                            </Box>
+                        </Box>
+                    </Box>
                 </Box>
             </Container>
-
+                {/*Descrição do anúncio*/}
             <Container maxWidth="md" className={classes.boxContainer}>
                 <Box className={classes.box}>
                     <Typography component="h6" variant="h6" color='textPrimary'>
@@ -97,7 +169,7 @@ const Publish = () => {
                     />
                 </Box>
             </Container>
-
+                {/*Dados do anunciante*/}
             <Container maxWidth="md" className={classes.boxContainer}>
                 <Box className={classes.box}>
                     <Typography component="h6" variant="h6" color='textPrimary' gutterBottom>
@@ -126,14 +198,14 @@ const Publish = () => {
                     
                 </Box>
             </Container>
- 
+                {/*Botão de publicar*/}
             <Container maxWidth="md" className={classes.boxContainer}>
                 <Box>
                     <Button variant='contained' color='primary'>
                         Publicar Anúncio 
                     </Button> 
                 </Box>
-            </Container>
+            </Container> 
         </TemplateDefault>
     )
 }
