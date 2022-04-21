@@ -15,7 +15,7 @@ import ButtonAppBar from '../../src/components/Header';
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        padding: theme.spacing(8, 0, 6)
+        padding: theme.spacing(4, 0, 4)
     },
     cardMedia: {
         paddingTop: '56.25%', // 16:9
@@ -36,7 +36,7 @@ export default function Home() {
         </Typography>
         <Button variant='contained' color='primary' className={classes.buttonAdd}>
             Publicar novo anúncio
-        </Button>
+        </Button> 
       </Container>
       <Container maxWidth='md'>
         <Grid container spacing={2}>
