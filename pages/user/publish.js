@@ -1,7 +1,15 @@
 import TemplateDefault from '../../src/templates/Default';
+import { useState } from 'react';
 
+import { Container,
+         Typography, 
+         Box, 
+         TextField, 
+         Select, 
+         Button, 
+         IconButton } from '@material-ui/core';
 
-import { Container, Typography, Box, TextField, Select, Button, IconButton } from '@material-ui/core';
+import { useDropzone } from 'react-dropzone';  
 import { makeStyles } from '@material-ui/core/styles';
 import { DeleteForever } from '@material-ui/icons';
 
@@ -9,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     mainImage: {
     },
     mask: {
- },
+ }, 
     container: {
         padding: theme.spacing(4, 0, 4)
     },
@@ -24,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     thumbsContainer: {
         display: 'flex',
         marginTop: 15,
+        flexWrap: 'wrap',
     },
     dropZone: {
         display: 'flex',
@@ -38,11 +47,12 @@ const useStyles = makeStyles((theme) => ({
         border: '2px dashed black',
     },
     thumb: {
-        position: 'relative',
+        position: 'relative',  
         width: 200,
         height: 150,
         backgroundSize: 'cover',
         backgroundPosition: 'center center',
+        margin: '0 15px 15px 0',
 
         '& $mainImage': {
             backgroundColor: 'blue',
@@ -69,6 +79,24 @@ const useStyles = makeStyles((theme) => ({
 
 const Publish = () => {
     const classes = useStyles();
+    const [files, setFiles] = useState([]); {/*Criar estado para guardar imagens*/}
+
+    const { getRootProps, getInputProps} = useDropzone({
+        accept: 'image/*',
+        onDrop: (acceptedFile) => {
+            {/*Aqui vai ser adicionado o arquivo no estado*/}
+                const newFiles = acceptedFile.map(file => {
+                    {/*Aqui cria o objeto*/}
+                    return Object.assign(file, { 
+                        preview: URL.createObjectURL(file)
+                    })
+            })
+            setFiles([
+                ...files,
+                ...newFiles
+                ])
+        }
+    })
 
     return (
         <TemplateDefault>
@@ -129,26 +157,36 @@ const Publish = () => {
                         A imagem principal será a imagem que aparecerá no seu anúncio.
                     </Typography>
                     <Box className={classes.thumbsContainer}>
-                        <Box className={classes.dropZone}>
+                        <Box className={classes.dropZone} {...getRootProps()}> {/*Área arrastavel/clicavel para imagens*/}
+                            <input {...getInputProps()} />  {/*Habilita a Área arrastavel/clicavel para imagens*/}
                             <Typography variant='body2' color='textPrimary'>
                                Clique para adicionar uma imagem ou arraste aqui.
                             </Typography>
                         </Box>
-                        <Box 
-                        className={classes.thumb} 
-                        style={{ backgroundImage: 'url(https://source.unsplash.com/random)' }}
-                        >
-                            <Box className={classes.mainImage}>
-                                <Typography variant='body' color='secondary'>
-                                    Principal
-                                </Typography>
+
+                        {files.map((file, index) => (
+                                <Box 
+                                    key={file.name}
+                                    className={classes.thumb} 
+                                     style={{ backgroundImage: `url(${file.preview})` }}
+                                >
+                                {
+                                    index === 0 ?
+                                    <Box className={classes.mainImage}>
+                                        <Typography variant='body' color='secondary'>
+                                            Principal
+                                        </Typography>
+                                    </Box>    
+                                    : null
+                                }
+                                <Box className={classes.mask}>
+                                    <IconButton color='secondary'>
+                                        <DeleteForever fontSize='large'/> 
+                                    </IconButton>
+                                </Box>
                             </Box>
-                            <Box className={classes.mask}>
-                                <IconButton color='secondary'>
-                                    <DeleteForever fontSize='large'/> 
-                                </IconButton>
-                            </Box>
-                        </Box>
+                        ))
+                        }
                     </Box>
                 </Box>
             </Container>
@@ -171,7 +209,7 @@ const Publish = () => {
             </Container>
                 {/*Dados do anunciante*/}
             <Container maxWidth="md" className={classes.boxContainer}>
-                <Box className={classes.box}>
+            <Box className={classes.box}>
                     <Typography component="h6" variant="h6" color='textPrimary' gutterBottom>
                       Dados de contato
                     </Typography>
@@ -180,7 +218,7 @@ const Publish = () => {
                         fullWidth
                         size='small'  
                         variant='outlined'
-                    />
+                    />   
                     <br/><br/>
                     <TextField
                         label="E-mail"

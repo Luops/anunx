@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         margin: '30px auto',
         display: 'block'
     }
-
+  
         }))
 export default function Home() {
     const classes = useStyles();
